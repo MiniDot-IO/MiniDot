@@ -10,11 +10,20 @@ namespace MiniDot
         public string ProjectLocation { get; set; }
     }
 
+    [Verb("install", HelpText = "Installs the MiniDot templates that can be used to create projects.")]
+    public class InstallOptions
+    {
+
+    }
+
     class Program
     {
         static int Main(string[] args)
         {
-            return Parser.Default.ParseArguments<BuildOptions>(args).MapResult((BuildOptions options) => Build(options), err => 1);
+            return Parser.Default.ParseArguments<BuildOptions, InstallOptions>(args).MapResult(
+                (BuildOptions options) => Build(options),
+                (InstallOptions options) => Install(options),
+                err => 1);
         }
 
         static int Build(BuildOptions options)
@@ -32,6 +41,13 @@ namespace MiniDot
                 worker.RunWorker();
                 return 0;
             }
+        }
+
+        static int Install(InstallOptions options)
+        {
+            string miniDotDirectory = Utilities.GetMiniDotDirectory();
+
+            return 0;
         }
     }
 }

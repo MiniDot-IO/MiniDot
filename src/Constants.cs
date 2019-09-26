@@ -2,8 +2,11 @@ namespace MiniDot
 {
     public static class Constants
     {
+        // General
+        public const string MINIDOT_URL = "https://minidot.io/";
+
         // Working Directory
-        public const string WORKING_DIRECTORY_NAME = "_worker";
+        public const string WORKING_DIRECTORY_NAME = "_minidot";
         public const string OUTPUT_BUILD_DIRECTORY = "minidot-build";
 
         // Git Commands

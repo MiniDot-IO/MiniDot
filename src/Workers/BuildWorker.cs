@@ -15,7 +15,7 @@ namespace MiniDot
             SourceDirectory = Path.GetFullPath(projectLocation);
 
             // Create the configuration reader
-            SourceConfiguration = new ConfigReader().ReadSourceConfig(projectLocation);
+            SourceConfiguration = new ConfigHelper().ReadSourceConfig(projectLocation);
 
             // Create our working folder for this build
             CreateWorkingDirectory();
@@ -30,7 +30,7 @@ namespace MiniDot
             gitHelper.CloneRepo();
 
             // Read our base config
-            BaseConfiguration = new ConfigReader().ReadBaseConfig(WorkingDirectory);
+            BaseConfiguration = new ConfigHelper().ReadBaseConfig(WorkingDirectory);
 
             // Create a new Builder class
             builder = new Builder(SourceDirectory, WorkingDirectory, BaseConfiguration.BaseSourceFile, SourceConfiguration.SourceFile, Path.Combine(WorkingDirectory, Constants.OUTPUT_BUILD_DIRECTORY));

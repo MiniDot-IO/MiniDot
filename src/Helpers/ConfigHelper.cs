@@ -24,7 +24,7 @@ namespace MiniDot
         public string BaseSourceFile { get; set; }
     }
 
-    public class ConfigReader
+    public class ConfigHelper
     {
         public SourceConfigModel ReadSourceConfig(string configPath, string configFileName = "minidot.json")
         {

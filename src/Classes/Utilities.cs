@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 namespace MiniDot
 {
     public class Utilities
@@ -15,6 +16,11 @@ namespace MiniDot
                 newHash += ALPHANUMERIC_CHARACTERS[random.Next(0, ALPHANUMERIC_CHARACTERS.Length - 1)];
             };
             return newHash;
+        }
+
+        public static string GetMiniDotDirectory()
+        {
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".minidot");
         }
     }
 }
