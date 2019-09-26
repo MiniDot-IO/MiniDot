@@ -2,17 +2,17 @@ using System;
 using System.IO;
 namespace MiniDot
 {
-    public class Worker
+    public class BuildWorker
     {
-        string CurrentDirectoryBase { get; set; }
-        string CurrentWorkingDirectoryName { get; set; }
+        string SourceDirectory { get; set; }
+        string WorkingDirectory { get; set; }
         GitHelper gitHelper { get; set; }
         Builder builder { get; set; }
         SourceConfigModel SourceConfiguration { get; set; }
         BaseConfigModel BaseConfiguration { get; set; }
         public Worker(string projectLocation)
         {
-            CurrentDirectoryBase = Path.GetFullPath(projectLocation);
+            SourceDirectory = Path.GetFullPath(projectLocation);
 
             // Create the configuration reader
             SourceConfiguration = new ConfigReader().ReadSourceConfig(projectLocation);
@@ -21,7 +21,7 @@ namespace MiniDot
             CreateWorkingDirectory();
 
             // Create a new GitHelper class
-            gitHelper = new GitHelper(SourceConfiguration.BaseRepoUrl, CurrentWorkingDirectoryName);
+            gitHelper = new GitHelper(SourceConfiguration.BaseRepoUrl, WorkingDirectory);
         }
 
         public void RunWorker()
@@ -30,21 +30,21 @@ namespace MiniDot
             gitHelper.CloneRepo();
 
             // Read our base config
-            BaseConfiguration = new ConfigReader().ReadBaseConfig(CurrentWorkingDirectoryName);
+            BaseConfiguration = new ConfigReader().ReadBaseConfig(WorkingDirectory);
 
             // Create a new Builder class
-            builder = new Builder(CurrentDirectoryBase, CurrentWorkingDirectoryName, BaseConfiguration.BaseSourceFile, SourceConfiguration.SourceFile, Path.Combine(CurrentWorkingDirectoryName, "minidot-build"));
+            builder = new Builder(SourceDirectory, WorkingDirectory, BaseConfiguration.BaseSourceFile, SourceConfiguration.SourceFile, Path.Combine(WorkingDirectory, Constants.OUTPUT_BUILD_DIRECTORY));
 
             // Attempt to build our source ready for combining with the base
             builder.BuildSource();
 
             // Attempt to build our base
-            builder.BuildBase();
+            builder.BuildBase(SourceConfiguration.ProjectName);
         }
 
         void CreateWorkingDirectory()
         {
-            string workerDirectoryBase = Path.Combine(CurrentDirectoryBase, Constants.WORKING_DIRECTORY_NAME);
+            string workerDirectoryBase = Path.Combine(SourceDirectory, Constants.WORKING_DIRECTORY_NAME);
             if (!Directory.Exists(workerDirectoryBase))
             {
                 Directory.CreateDirectory(workerDirectoryBase);
@@ -58,7 +58,7 @@ namespace MiniDot
             }
 
             Directory.CreateDirectory(workingDirectoryTempName);
-            CurrentWorkingDirectoryName = Path.GetFullPath(workingDirectoryTempName);
+            WorkingDirectory = Path.GetFullPath(workingDirectoryTempName);
         }
     }
 }

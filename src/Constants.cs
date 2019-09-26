@@ -4,6 +4,7 @@ namespace MiniDot
     {
         // Working Directory
         public const string WORKING_DIRECTORY_NAME = "_worker";
+        public const string OUTPUT_BUILD_DIRECTORY = "minidot-build";
 
         // Git Commands
         public const string GIT_BASE = "git";

@@ -17,10 +17,10 @@ namespace MiniDot
             OutputDirectory = outputDirectory;
         }
 
-        public void BuildSource(string outputAssemblyName = "MiniDotBootstrap")
+        public void BuildSource()
         {
             // TODO: refactor this logic
-            string buildCommand = string.Format(Constants.MSBUILD_BUILD_NAMED_PROJECT, System.IO.Path.Combine(SourceWorkingDirectory, SourceFile), OutputDirectory, outputAssemblyName);
+            string buildCommand = string.Format(Constants.MSBUILD_BUILD_PROJECT, System.IO.Path.Combine(SourceWorkingDirectory, SourceFile), OutputDirectory);
             Process process = new Process();
             process.StartInfo = new ProcessStartInfo(Constants.MSBUILD_BASE, buildCommand)
             {
@@ -30,10 +30,10 @@ namespace MiniDot
             process.WaitForExit();
         }
 
-        public void BuildBase()
+        public void BuildBase(string outputAssemblyName)
         {
             // TODO: refactor this logic
-            string buildCommand = string.Format(Constants.MSBUILD_BUILD_PROJECT, System.IO.Path.Combine(BaseWorkingDirectory, BaseSourceFile), OutputDirectory);
+            string buildCommand = string.Format(Constants.MSBUILD_BUILD_NAMED_PROJECT, System.IO.Path.Combine(BaseWorkingDirectory, BaseSourceFile), OutputDirectory, outputAssemblyName);
             Process process = new Process();
             process.StartInfo = new ProcessStartInfo(Constants.MSBUILD_BASE, buildCommand)
             {
