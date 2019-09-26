@@ -10,7 +10,7 @@ namespace MiniDot
         Builder builder { get; set; }
         SourceConfigModel SourceConfiguration { get; set; }
         BaseConfigModel BaseConfiguration { get; set; }
-        public Worker(string projectLocation)
+        public BuildWorker(string projectLocation)
         {
             SourceDirectory = Path.GetFullPath(projectLocation);
 
