@@ -3,7 +3,7 @@ using System.IO;
 namespace MiniDot
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class ConfigModel
+    public class SourceConfigModel
     {
         [JsonProperty("projectName")]
         public string ProjectName { get; set; }
@@ -17,13 +17,25 @@ namespace MiniDot
         public string SourceFile { get; set; }
     }
 
+    [JsonObject(MemberSerialization.OptIn)]
+    public class BaseConfigModel
+    {
+        [JsonProperty("baseSourceFile")]
+        public string BaseSourceFile { get; set; }
+    }
+
     public class ConfigReader
     {
-        public ConfigModel Configuration { get; set; }
-        public ConfigReader(string configPath, string configFileName = "minidot.json")
+        public SourceConfigModel ReadSourceConfig(string configPath, string configFileName = "minidot.json")
         {
-            Configuration = JsonConvert.DeserializeObject<ConfigModel>(File.ReadAllText(Path.Combine(configPath, configFileName)));
-            System.Console.WriteLine(JsonConvert.SerializeObject(Configuration));
+            SourceConfigModel config = JsonConvert.DeserializeObject<SourceConfigModel>(File.ReadAllText(Path.Combine(configPath, configFileName)));
+            return config;
+        }
+
+        public BaseConfigModel ReadBaseConfig(string configPath, string configFileName = "minidot-base.json")
+        {
+            BaseConfigModel config = JsonConvert.DeserializeObject<BaseConfigModel>(File.ReadAllText(Path.Combine(configPath, configFileName)));
+            return config;
         }
     }
 }

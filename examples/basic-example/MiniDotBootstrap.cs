@@ -1,6 +1,6 @@
 namespace MyMiniDotProject
 {
-    public class MiniDotBoostrap
+    public class MiniDotBootstrap
     {
         public void MiniDotEntryPoint()
         {

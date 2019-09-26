@@ -3,23 +3,37 @@ namespace MiniDot
 {
     public class Builder
     {
-        string WorkingDirectory { get; set; }
+        string SourceWorkingDirectory { get; set; }
         string SourceFile { get; set; }
+        string BaseWorkingDirectory { get; set; }
+        string BaseSourceFile { get; set; }
         string OutputDirectory { get; set; }
-        string OutputAssemblyName { get; set; }
-        public Builder(string workingDirectory, string sourceFile, string outputDirectory, string outputAssemblyName = "MiniDotBootstrap")
+        public Builder(string sourceWorkingDirectory, string baseWorkingDirectory, string baseSourceFile, string sourceFile, string outputDirectory)
         {
-            WorkingDirectory = workingDirectory;
+            SourceWorkingDirectory = sourceWorkingDirectory;
+            BaseWorkingDirectory = baseWorkingDirectory;
+            BaseSourceFile = baseSourceFile;
             SourceFile = sourceFile;
             OutputDirectory = outputDirectory;
-            OutputAssemblyName = outputAssemblyName;
         }
 
-        public void Build()
+        public void BuildSource(string outputAssemblyName = "MiniDotBootstrap")
         {
             // TODO: refactor this logic
-            string buildCommand = string.Format(Constants.MSBUILD_BUILD_NAMED_PROJECT, System.IO.Path.Combine(WorkingDirectory, SourceFile), OutputDirectory, OutputAssemblyName);
-            System.Console.WriteLine(buildCommand);
+            string buildCommand = string.Format(Constants.MSBUILD_BUILD_NAMED_PROJECT, System.IO.Path.Combine(SourceWorkingDirectory, SourceFile), OutputDirectory, outputAssemblyName);
+            Process process = new Process();
+            process.StartInfo = new ProcessStartInfo(Constants.MSBUILD_BASE, buildCommand)
+            {
+                UseShellExecute = false
+            };
+            process.Start();
+            process.WaitForExit();
+        }
+
+        public void BuildBase()
+        {
+            // TODO: refactor this logic
+            string buildCommand = string.Format(Constants.MSBUILD_BUILD_PROJECT, System.IO.Path.Combine(BaseWorkingDirectory, BaseSourceFile), OutputDirectory);
             Process process = new Process();
             process.StartInfo = new ProcessStartInfo(Constants.MSBUILD_BASE, buildCommand)
             {

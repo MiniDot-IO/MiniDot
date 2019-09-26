@@ -11,6 +11,7 @@ namespace MiniDot
 
         // MSBuild Commands
         public const string MSBUILD_BASE = "msbuild";
-        public const string MSBUILD_BUILD_NAMED_PROJECT = "{0} -property:OutDir={1};AssemblyName={2}";
+        public const string MSBUILD_BUILD_NAMED_PROJECT = "{0} -restore -property:OutDir={1};AssemblyName={2}";
+        public const string MSBUILD_BUILD_PROJECT = "{0} -restore -property:OutDir={1}";
     }
 }
