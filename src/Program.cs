@@ -15,12 +15,11 @@ namespace MiniDot
     {
         static void Main(string[] args)
         {
-            Parser.Default.ParseArguments<Options>(args)
-                  .WithParsed<Options>(options =>
-                  {
-                      Worker worker = new Worker();
-                      worker.CreateWorkingDirectory(options.ProjectName);
-                  });
+            Parser.Default.ParseArguments<Options>(args).WithParsed<Options>(options =>
+            {
+                Worker worker = new Worker(options.BaseRepo, options.ProjectName);
+                worker.RunWorker();
+            });
         }
     }
 }
