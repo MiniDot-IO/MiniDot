@@ -2,6 +2,7 @@ namespace MiniDot
 {
     public static class Constants
     {
+        // Working Directory
         public const string WORKING_DIRECTORY_NAME = "_worker";
 
         // Git Commands

@@ -6,18 +6,18 @@ namespace MiniDot
     {
         string CurrentDirectoryBase { get; set; }
         string CurrentWorkingDirectoryName { get; set; }
-        string BaseRepoUrl { get; set; }
-        string ProjectName { get; set; }
         GitHelper gitHelper { get; set; }
-        public Worker(string baseUrl, string projectName)
+        ConfigModel Configuration { get; set; }
+        public Worker(string projectLocation)
         {
             CurrentDirectoryBase = Path.Combine(Environment.CurrentDirectory, Constants.WORKING_DIRECTORY_NAME);
-            BaseRepoUrl = baseUrl;
-            ProjectName = projectName;
+
+            // Create the configuration reader
+            Configuration = new ConfigReader(projectLocation).Configuration;
 
             CreateWorkingDirectory();
 
-            gitHelper = new GitHelper(BaseRepoUrl, CurrentWorkingDirectoryName);
+            gitHelper = new GitHelper(Configuration.BaseRepoUrl, CurrentWorkingDirectoryName);
         }
 
         public void RunWorker()
@@ -33,7 +33,7 @@ namespace MiniDot
                 Directory.CreateDirectory(CurrentDirectoryBase);
             }
 
-            string workingDirectoryTempName = Path.Combine(CurrentDirectoryBase, ProjectName + "-" + Utilities.GenerateHash());
+            string workingDirectoryTempName = Path.Combine(CurrentDirectoryBase, Configuration.ProjectName + "-" + Utilities.GenerateHash());
 
             if (Directory.Exists(workingDirectoryTempName))
             {
