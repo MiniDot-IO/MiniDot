@@ -16,13 +16,20 @@ namespace MiniDot
 
     }
 
+    [Verb("create", HelpText = "Creates a new MiniDot project.")]
+    public class CreateOptions
+    {
+
+    }
+
     class Program
     {
         static int Main(string[] args)
         {
-            return Parser.Default.ParseArguments<BuildOptions, InstallOptions>(args).MapResult(
+            return Parser.Default.ParseArguments<BuildOptions, InstallOptions, CreateOptions>(args).MapResult(
                 (BuildOptions options) => Build(options),
                 (InstallOptions options) => Install(options),
+                (CreateOptions options) => Create(options),
                 err => 1);
         }
 
@@ -46,6 +53,19 @@ namespace MiniDot
         static int Install(InstallOptions options)
         {
             string miniDotDirectory = Utilities.GetMiniDotDirectory();
+
+            return 0;
+        }
+
+        static int Create(CreateOptions options)
+        {
+            string templateDirectory = Utilities.GetTemplateDirectory();
+            int numberOfTemplates = new CreateWorker().GetNumberOfTemplates(templateDirectory);
+
+            if (numberOfTemplates == 0)
+            {
+                Console.WriteLine("You do not have any templates installed. Run `minidot install` to install the default templates.");
+            }
 
             return 0;
         }

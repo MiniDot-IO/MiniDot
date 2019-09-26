@@ -22,5 +22,10 @@ namespace MiniDot
         {
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".minidot");
         }
+
+        public static string GetTemplateDirectory()
+        {
+            return Path.Combine(GetMiniDotDirectory(), "templates");
+        }
     }
 }
