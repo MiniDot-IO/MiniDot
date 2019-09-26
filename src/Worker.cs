@@ -7,33 +7,43 @@ namespace MiniDot
         string CurrentDirectoryBase { get; set; }
         string CurrentWorkingDirectoryName { get; set; }
         GitHelper gitHelper { get; set; }
+        Builder builder { get; set; }
         ConfigModel Configuration { get; set; }
         public Worker(string projectLocation)
         {
-            CurrentDirectoryBase = Path.Combine(Environment.CurrentDirectory, Constants.WORKING_DIRECTORY_NAME);
+            CurrentDirectoryBase = Path.GetFullPath(projectLocation);
 
             // Create the configuration reader
             Configuration = new ConfigReader(projectLocation).Configuration;
 
+            // Create our working folder for this build
             CreateWorkingDirectory();
 
+            // Create a new GitHelper class
             gitHelper = new GitHelper(Configuration.BaseRepoUrl, CurrentWorkingDirectoryName);
+
+            // Create a new Builder class
+            builder = new Builder(CurrentDirectoryBase, Configuration.SourceFile, Path.Combine(CurrentWorkingDirectoryName, "minidot-build"));
         }
 
         public void RunWorker()
         {
             // Clone the base repo
             gitHelper.CloneRepo();
+
+            // Attempt to build our project ready for combining with the base
+            builder.Build();
         }
 
         void CreateWorkingDirectory()
         {
-            if (!Directory.Exists(CurrentDirectoryBase))
+            string workerDirectoryBase = Path.Combine(CurrentDirectoryBase, Constants.WORKING_DIRECTORY_NAME);
+            if (!Directory.Exists(workerDirectoryBase))
             {
-                Directory.CreateDirectory(CurrentDirectoryBase);
+                Directory.CreateDirectory(workerDirectoryBase);
             }
 
-            string workingDirectoryTempName = Path.Combine(CurrentDirectoryBase, Configuration.ProjectName + "-" + Utilities.GenerateHash());
+            string workingDirectoryTempName = Path.Combine(workerDirectoryBase, Configuration.ProjectName + "-" + Utilities.GenerateHash());
 
             if (Directory.Exists(workingDirectoryTempName))
             {

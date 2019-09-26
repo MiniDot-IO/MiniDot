@@ -3,11 +3,6 @@ namespace MyMiniDotProject
 {
     public class BasicExample
     {
-        public void MiniDotEntryPoint()
-        {
-            PrintNumbers();
-        }
-
         public void PrintNumbers()
         {
             for (int i = 0; i < 50; i++)

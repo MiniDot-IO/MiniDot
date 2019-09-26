@@ -13,8 +13,8 @@ namespace MiniDot
         public string ProjectVersion { get; set; }
         [JsonProperty("baseRepoUrl")]
         public string BaseRepoUrl { get; set; }
-        [JsonProperty("sourceFiles")]
-        public string[] SourceFiles { get; set; }
+        [JsonProperty("sourceFile")]
+        public string SourceFile { get; set; }
     }
 
     public class ConfigReader

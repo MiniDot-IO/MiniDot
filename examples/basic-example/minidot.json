@@ -2,6 +2,6 @@
   "projectName": "MyMiniDotProject",
   "projectDescription": "My first MiniDot project!",
   "projectVersion": "1.0.0",
-  "baseRepoUrl": "https://github.com/morganlaneap/bootstrappy",
-  "sourceFiles": ["BusinessLogic.cs"]
+  "baseRepoUrl": "https://github.com/morganlaneap/minidot-example-base",
+  "sourceFile": "BasicExample.csproj"
 }
